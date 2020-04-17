@@ -1,0 +1,77 @@
+{{>frontend_header}}
+<div id="slideshow">
+    <table>
+        <thead></thead>
+        <tbody>
+            <tr>
+                <td><img id="image-1" src="" alt="slidehow-image" /></td>
+                <td><img id="image-2" src="" alt="slidehow-image" /></td>
+                <td><img id="image-3" src="" alt="slidehow-image" /></td>
+                <td><img id="image-4" src="" alt="slidehow-image" /></td>
+            </tr>
+        </tbody>
+    </table>
+    <script>
+        const image1 = document.getElementById('image-1')
+        const image2 = document.getElementById('image-2')
+        const image3 = document.getElementById('image-3')
+        const image4 = document.getElementById('image-4')
+        const interval = 3000
+        var x = 14
+        function slideshow() {
+            image1.src = '../../assets/images/slideshow/artboard' + x + '.png'
+            image2.src = '../../assets/images/slideshow/artboard' + (x + 1) + '.png'
+            image3.src = '../../assets/images/slideshow/artboard' + (x + 2) + '.png'
+            image4.src = '../../assets/images/slideshow/artboard' + (x + 3) + '.png'
+            if (x + 4 < 25) x++
+            else x = 14
+            setTimeout(slideshow, interval)
+        }
+        slideshow()
+    </script>
+</div>
+<div id="main-text">
+    <p>Chef Deb Green (Grandma Green) and our Staff are happy that you are here to appreciate our food.
+        GG's pastas, sauces, soups, baked good, and breads are all house made with love and care. We spend
+        hours preparing and baking so that your food will be tender and perfectly delicious. Sit, eat, and enjoy!
+    </p>
+    <p>
+        Thank you for visiting and we hope to see you soon.
+    </p>
+    <div></div>
+    <h3>About Us</h3>
+    <br />
+    <div id="location-rounded">
+        <table>
+            <thead></thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <table>
+                            <thead></thead>
+                            <tbody>
+                                <tr><td><img src="../../assets/images/misc/location.PNG" /></td></tr>
+                                <tr><td>201 Main Rd, Columbia SC 29044</td></tr>
+                            </tbody>
+                        </table>
+                    </td>
+                    <td>
+                        <table>
+                            <thead></thead>
+                            <tbody>
+                                <tr><td><h5>Hours of Operation</h5></td></tr>
+                                <tr><td><h5>Open 7 Days a Week</h5></td></tr>
+                                <tr><td><h5>Breakfast: 5:00 am - 2:00 pm</h5></td></tr>
+                                <tr><td><h5>Lunch: 11:00 am - 4:00 pm</h5></td></tr>
+                                <tr><td><h5>Dinner: 4:00 pm - 9:30 pm</h5></td></tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <p>We have locations throughout South Carolina in Charleston, Columbia, Myrtle Beach, Greenville, and Sumter.
+    </p>
+</div>
+{{>frontend_footer}}

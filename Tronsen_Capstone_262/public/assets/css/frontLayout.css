@@ -1,0 +1,216 @@
+/* Base Styles */
+
+
+html {
+    font-size: 100%;
+    color: #0EB34D;
+    font-family: sans-serif;
+    text-align: center;
+    background-color: #EEF6E7;
+    
+}
+
+
+body {
+    width: 60rem;
+    margin: auto;
+    min-height: 100vh;
+    background-color: #FFFFFF;
+}
+
+#main {
+    min-height: 100vh;
+}
+
+#non-footer {
+    min-height: calc(100vh - 2rem);
+    padding-bottom: 5rem;
+}
+
+div {
+    margin: auto auto 2rem auto;
+}
+
+table {
+    vertical-align: middle;
+}
+td {
+    vertical-align: middle;
+    
+}
+
+p {
+    font-size: 1rem;
+    width: 40rem;
+    margin: auto;
+}
+
+
+h1 {
+    font-size: 3rem;
+}
+h3 {
+    font-size: 2rem
+}
+h5 {
+    font-size: 1.5rem;
+}
+
+
+footer {
+    height: 2rem;
+    vertical-align: middle;
+    background-color: rgb(247, 247, 247);
+    padding-top: 1rem;
+}
+
+
+a:visited, a:active {
+    text-decoration: none;
+    color:#0EB34D;
+}
+
+a:hover, a:link {
+    text-decoration: none;
+    color: rgb(10, 126, 54);
+}
+
+
+#header-rounded img {
+    width: 12rem;
+}
+
+
+#header-rounded table {
+    width: 45rem;
+    margin: auto;
+
+}
+
+#header-rounded td {
+    width: 15rem;
+    text-align: center;
+    font-size: 2rem;
+    
+}
+
+#header-rounded {
+    background-color: #EEF6E7;
+    border-radius: 0px 0px 50px 50px;
+    width: 45rem;
+}
+
+
+/* About Page Styles */
+
+#slideshow {
+    background-color: #EEF6E7;
+    border-radius: 50px 50px 50px 50px;
+    width: 55rem;
+}
+#slideshow table {
+    margin: auto;
+}
+
+#slideshow img {
+    width: 10rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+#location-rounded {
+    background-color: #EEF6E7;
+    border-radius: 50px 50px 50px 50px;
+    width: 55rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+#location-rounded > table {
+    margin: auto;
+    width: 100%;
+}
+
+#location-rounded > table table {
+    margin: auto;
+    padding-left: 5rem;
+    padding-right: 5rem;
+    
+}
+
+
+
+#location-rounded img {
+    width: 25rem;
+    margin: auto;
+    border-radius: 50px 50px 50px 50px;
+}
+
+#location-rounded tr {
+    margin: 1rem 1rem 1rem 1rem;
+}
+
+
+
+
+/* Menu Page Styles */
+
+
+
+#food-menus {
+    width: 55rem;
+}
+
+#food-menus > table{
+    margin: auto;
+    width: 55rem;
+}
+
+
+#food-menus > table tr {
+    margin: auto;
+    width: 100%;
+}
+
+#food-menus > table table, #food-menus > table div.menu-rounded {
+    width: 100%;
+}
+
+td.half-width {
+    width: 50%;
+}
+td.third-width {
+    width: 33.3%;
+}
+
+
+.menu-rounded {
+    background-color: #EEF6E7;
+    border-radius: 50px 50px 50px 50px;
+    width: 100%;
+}
+.menu-rounded p {
+    width: 80%;
+    padding: 1rem 1rem 1rem 1rem;
+}
+
+
+@media only screen and (max-width: 600px) {
+    #food-menus-desktop {
+        display: none;
+        font-size: 2rem;
+    }
+    .menu-rounded p, .menu-rounded table   {
+        font-size: 2rem;
+    }
+    p {
+        font-size: 2rem;
+    }
+}
+@media only screen and (min-width: 601px) {
+    #food-menus-mobile {
+        display: none;
+    }
+}
