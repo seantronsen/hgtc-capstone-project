@@ -41,8 +41,8 @@ app.use('/', express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 const conObject = {
-  host: 'istwebclass.org',
-  user: 'stronsen_cap262',
+  host: 'STEALTH-2018',
+  user: 'dev',
   password: 'password',
   database: 'stronsen_capstone262',
 };
@@ -692,25 +692,190 @@ app.patch('/backend/backendUpdateLocationsData', (req, res) => {
       let sqlTemp =
         'UPDATE order_locations SET order_locations_building=?, order_locations_area=?, order_locations_subarea=?, order_locations_modification_user=?, order_locations_modification_time=CURRENT_TIMESTAMP() WHERE order_locations_id=?;';
       let sql = mysql2.format(sqlTemp, [building, area, subarea, entry_user, ID]);
-      console.log(sql)
+      console.log(sql);
       con.execute(sql, (err, result) => {
         if (err) {
           console.log(err);
           return res.status(200).send({
-            resMsg:
-              'An error occurred while updating the item in the database.',
+            resMsg: 'An error occurred while updating the item in the database.',
           });
-        }
-        else {
+        } else {
           return res.status(200).send({
-            resMsg:
-              `${result.affectedRows} row(s) were affected by the update.`,
+            resMsg: `${result.affectedRows} row(s) were affected by the update.`,
           });
         }
       });
     }
   });
 });
+
+app.patch('/backend/backendUpdateLocationsData', (req, res) => {
+  const { ID, building, area, subarea, entry_user } = req.body;
+  let sql = mysql2.format('SELECT * FROM order_locations WHERE order_locations_id=?;', [
+    ID,
+  ]);
+  con.query(sql, (err, data) => {
+    if (err) {
+      console.log(err);
+      return res.status(200).send({
+        resMsg:
+          'A server error has occurred. Please contact support if this does not resolve momentarily.',
+      });
+    } else if (data.length < 1) {
+      return res.status(200).send({
+        resMsg: 'The item that you were trying to update has since been removed.',
+      });
+    } else {
+      let sqlTemp =
+        'UPDATE order_locations SET order_locations_building=?, order_locations_area=?, order_locations_subarea=?, order_locations_modification_user=?, order_locations_modification_time=CURRENT_TIMESTAMP() WHERE order_locations_id=?;';
+      let sql = mysql2.format(sqlTemp, [building, area, subarea, entry_user, ID]);
+      console.log(sql);
+      con.execute(sql, (err, result) => {
+        if (err) {
+          console.log(err);
+          return res.status(200).send({
+            resMsg: 'An error occurred while updating the item in the database.',
+          });
+        } else {
+          return res.status(200).send({
+            resMsg: `${result.affectedRows} row(s) were affected by the update.`,
+          });
+        }
+      });
+    }
+  });
+});
+
+app.patch('/backend/backendUpdateInventoryData', (req, res) => {
+  const { ID, name, description, type, price, quantity, unit, entry_user } = req.body;
+  let sql = mysql2.format('SELECT * FROM inventory_items WHERE inventory_items_id=?;', [
+    ID,
+  ]);
+  con.query(sql, (err, data) => {
+    if (err) {
+      console.log(err);
+      return res.status(200).send({
+        resMsg:
+          'A server error has occurred. Please contact support if this does not resolve momentarily.',
+      });
+    } else if (data.length < 1) {
+      return res.status(200).send({
+        resMsg: 'The item that you were trying to update has since been removed.',
+      });
+    } else {
+      let sqlTemp =
+        'UPDATE inventory_items SET inventory_items_name=?, inventory_items_description=?, item_types_id=?, inventory_items_price=?, inventory_items_quantity=?, inventory_items_measurement=?, inventory_items_modification_user=?, inventory_items_modification_time=CURRENT_TIMESTAMP() WHERE inventory_items_id=?;';
+      let sql = mysql2.format(sqlTemp, [name, description, type, price, quantity, unit, entry_user, ID]);
+      console.log(sql);
+      con.execute(sql, (err, result) => {
+        if (err) {
+          console.log(err);
+          if (err.errmo === 1452) {
+            return res.status(200).send({
+              resMsg: 'The item type that you specified does not exist, please contact your admin to have it added.',
+            });
+          } else {
+            return res.status(200).send({
+              resMsg: 'An error occurred while updating the item in the database.',
+            });
+          }
+        } else {
+          return res.status(200).send({
+            resMsg: `${result.affectedRows} row(s) were affected by the update.`,
+          });
+        }
+      });
+    }
+  });
+});
+
+app.patch('/backend/backendUpdateMenuData', (req, res) => {
+  const { ID, name, description, price, entry_user } = req.body;
+  let sql = mysql2.format('SELECT * FROM menu_items WHERE menu_items_id=?;', [
+    ID,
+  ]);
+  con.query(sql, (err, data) => {
+    if (err) {
+      console.log(err);
+      return res.status(200).send({
+        resMsg:
+          'A server error has occurred. Please contact support if this does not resolve momentarily.',
+      });
+    } else if (data.length < 1) {
+      return res.status(200).send({
+        resMsg: 'The item that you were trying to update has since been removed.',
+      });
+    } else {
+      let sqlTemp =
+        'UPDATE menu_items SET menu_items_name=?, menu_items_description=?, menu_items_sale_price=?, menu_items_modification_user=?, menu_items_modification_time=CURRENT_TIMESTAMP() WHERE menu_items_id=?;';
+      let sql = mysql2.format(sqlTemp, [name, description, price, entry_user, ID]);
+      console.log(sql);
+      con.execute(sql, (err, result) => {
+        if (err) {
+          console.log(err);
+          return res.status(200).send({
+            resMsg: 'An error occurred while updating the item in the database.',
+          });
+        } else {
+          return res.status(200).send({
+            resMsg: `${result.affectedRows} row(s) were affected by the update.`,
+          });
+        }
+      });
+    }
+  });
+});
+
+app.patch('/backend/backendUpdateOrderData', (req, res) => {
+  const { ID, name, description, price, entry_user } = req.body;
+  let sql = mysql2.format('SELECT * FROM orders WHERE orders_id=?;', [
+    ID,
+  ]);
+  con.query(sql, (err, data) => {
+    if (err) {
+      console.log(err);
+      return res.status(200).send({
+        resMsg:
+          'A server error has occurred. Please contact support if this does not resolve momentarily.',
+      });
+    } else if (data.length < 1) {
+      return res.status(200).send({
+        resMsg: 'The order that you were trying to update has since been removed.',
+      });
+    } else {
+      let sqlTemp =
+        'UPDATE orders SET orders_location=?, orders_status=?, orders_note=?, orders_modification_user=?, menu_items_modification_time=CURRENT_TIMESTAMP() WHERE orders_id=?;';
+      let sql = mysql2.format(sqlTemp, [name, description, price, entry_user, ID]);
+      console.log(sql);
+      con.execute(sql, (err, result) => {
+        if (err) {
+          if (err.errmo === 1452) {
+            return res.status(200).send({
+              resMsg: 'The location ID that you specified does not exist, please contact your admin to have it added.',
+            });
+          } else {
+            return res.status(200).send({
+              resMsg: 'An error occurred while updating the item in the database.',
+            });
+          }
+        } else {
+          return res.status(200).send({
+            resMsg: `${result.affectedRows} row(s) were affected by the update.`,
+          });
+        }
+      });
+    }
+  });
+});
+
+
+
+
+
+
+
+
+
 
 // Custom GET Calls
 
@@ -790,6 +955,7 @@ app.get('/backend/LoadOrderData', (req, res) => {
   });
 });
 
+
 app.get('/backend/backendLoadLocationsData', (req, res) => {
   let sqlTemp =
     'SELECT order_locations_building as "Building", order_locations_area AS "Area", order_locations_subarea AS "Subarea" FROM order_locations;';
@@ -868,9 +1034,63 @@ app.get('/backend/backendLoadInventoryData', (req, res) => {
   });
 });
 
+app.get('/backend/backendLoadFullInventoryData', (req, res) => {
+  let sqlTemp =
+    'SELECT inventory_items_id AS "ID", inventory_items_name as "Item Name", inventory_items_description AS "Item Description", item_types_id AS "Item Type", inventory_items_price AS "Item Price", inventory_items_quantity AS "Quantity Available", inventory_items_measurement AS "Measurement Unit" FROM inventory_items;';
+  con.query(mysql2.format(sqlTemp, []), (err, data, meta) => {
+    if (err) {
+      console.log(err);
+      return res
+        .status(200)
+        .send({ resMsg: 'Error loading available inventory from database.' });
+    } else if (data.length === 0) {
+      return res.status(200).send({
+        resMsg:
+          'There are no inventory items in the system. Please add some via the corresponding menu option.',
+      });
+    } else {
+      console.log(data);
+      return res.status(200).send({
+        resMsg: `Server was last polled at ${new Date(Date.now()).toString()}`,
+        arrayData: data,
+        arrayHeaderData: meta.map((metaData) => {
+          return metaData.name;
+        }),
+      });
+    }
+  });
+});
+
 app.get('/backend/backendLoadMenuData', (req, res) => {
   let sqlTemp =
     'SELECT menu_items_name as "Menu Item Name", menu_items_description AS "Menu Item Description", menu_items_sale_price AS "Menu Item Price" FROM menu_items;';
+  con.query(mysql2.format(sqlTemp, []), (err, data, meta) => {
+    if (err) {
+      console.log(err);
+      return res
+        .status(200)
+        .send({ resMsg: 'Error loading available menu items from database.' });
+    } else if (data.length === 0) {
+      return res.status(200).send({
+        resMsg:
+          'There are no menu items in the system. Please add some via the corresponding menu option.',
+      });
+    } else {
+      return res.status(200).send({
+        resMsg: `Server was last polled at ${new Date(Date.now()).toString()}`,
+        arrayData: data,
+        arrayHeaderData: meta.map((metaData) => {
+          return metaData.name;
+        }),
+      });
+    }
+  });
+});
+
+
+app.get('/backend/backendLoadFullMenuData', (req, res) => {
+  let sqlTemp =
+    'SELECT menu_items_id AS "ID", menu_items_name AS "Menu Item Name", menu_items_description AS "Menu Item Description", menu_items_sale_price AS "Menu Item Price" FROM menu_items;';
   con.query(mysql2.format(sqlTemp, []), (err, data, meta) => {
     if (err) {
       console.log(err);
@@ -943,6 +1163,31 @@ app.get('/backend/backendLoadAllOrderData', (req, res) => {
     }
   });
 });
+
+app.get('/backend/LoadFullOrderData', (req, res) => {
+  let sqlTemp =
+    'SELECT  orders_id as "ID", order_locations_id AS "Location ID", orders_status AS "Order Status", orders_note AS "Note", orders_entry_user AS "Entry User", orders_modification_time AS "Last Modification Time" FROM orders;';
+  con.query(mysql2.format(sqlTemp, []), (err, data, meta) => {
+    if (err) {
+      console.log(err);
+      return res.status(200).send({ resMsg: 'Error loading orders from database.' });
+    } else if (data.length === 0) {
+      return res.status(200).send({
+        resMsg:
+          'There are no orders in the system. Please add some via the corresponding menu option.',
+      });
+    } else {
+      return res.status(200).send({
+        resMsg: `Server was last polled at ${new Date(Date.now()).toString()}`,
+        arrayData: data,
+        arrayHeaderData: meta.map((metaData) => {
+          return metaData.name;
+        }),
+      });
+    }
+  });
+});
+
 
 app.get('/*', (req, res) => {
   res.status(404).render('404', {
