@@ -15,7 +15,9 @@ module.exports = {
         updatelocations: './src/pages/updatelocations.js',
         updateinventoryitems: './src/pages/updateinventoryitems.js',
         updatemenuitems: './src/pages/updatemenuitems.js',
-        updateorders: './src/pages/updateorders.js'
+        updateorders: './src/pages/updateorders.js',
+        updateusers: './src/pages/updateusers.js',
+        updateschedule: './src/pages/updateschedule.js'
     },
     mode: 'production',
     output: {

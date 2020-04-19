@@ -3,7 +3,7 @@ import React from 'react';
 const OutputTable = (props) => {
   console.log(props.outputTableHeaderData)
   return (
-    <table>
+    <table id="dataOutputTable">
       <thead>
         <tr>
           {props.outputTableHeaderData &&
