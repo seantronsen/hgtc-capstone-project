@@ -12,7 +12,10 @@ module.exports = {
         searchmenuitems: './src/pages/searchmenuitems.js',
         searchusers: './src/pages/searchusers.js',
         searchorders: './src/pages/searchorders.js',
-        updatelocations: './src/pages/updatelocations.js'
+        updatelocations: './src/pages/updatelocations.js',
+        updateinventoryitems: './src/pages/updateinventoryitems.js',
+        updatemenuitems: './src/pages/updatemenuitems.js',
+        updateorders: './src/pages/updateorders.js'
     },
     mode: 'production',
     output: {
