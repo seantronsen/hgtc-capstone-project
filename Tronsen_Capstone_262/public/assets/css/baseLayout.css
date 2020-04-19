@@ -227,9 +227,37 @@ div#content {
   height: 59.2vh;
   width: 40vw;
   font-size: 1rem;
+  overflow: auto;
 }
 
 .ReturnResult {
   transition-duration: 2s;
   background-attachment: inherit;
+}
+
+#dataOutputTable {
+  width: 30vw;
+  text-align: center;
+  
+}
+
+#dataOutputTable tr {
+  border-bottom: 2px outset #15589e;
+  padding: 0.5rem;
+}
+
+#dataOutputTable td {
+  padding: 0.3rem;
+}
+
+#dataOutputTable button {
+  width: 100%;
+}
+
+#dataOutputTable input { 
+ width: 100%;
+}
+
+#updateScheduleHeader {
+  height: 1vh;
 }

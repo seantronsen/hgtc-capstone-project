@@ -5,7 +5,8 @@ import $ from 'jquery';
 import ReturnResult from '../ReturnResult';
 import validator from 'validator';
 
-export default class UpdateOrdersUtil extends React.Component {
+
+export default class UpdateUsersUtil extends React.Component {
   state = {
     dataArray: [],
     dataArrayHeaders: [],
@@ -17,8 +18,9 @@ export default class UpdateOrdersUtil extends React.Component {
     setInterval(this.loadDataFromServer.bind(this), 10000);
   }
   updateDataOnServer(data) {
+    console.log('call')
     $.ajax({
-      url: '/backend/backendUpdateOrderData',
+      url: '/backend/backendUpdateUserData',
       dataType: 'json',
       type: 'PATCH',
       data,
@@ -45,7 +47,7 @@ export default class UpdateOrdersUtil extends React.Component {
   loadDataFromServer = () => {
     if (this.state.pollEnabled) {
       $.ajax({
-        url: '/backend/backendLoadFullOrderData',
+        url: '/backend/backendLoadFullUserData',
         dataType: 'json',
         type: 'GET',
         success: (data, status, xhr) => {
@@ -54,7 +56,7 @@ export default class UpdateOrdersUtil extends React.Component {
             returnResultMessage: data.resMsg,
             dataArray: data.arrayData,
             dataArrayHeaders: data.arrayHeaderData,
-          }));
+          }));              
         },
         error: (xhr, status, err) => {
           this.setState(() => ({
@@ -68,35 +70,82 @@ export default class UpdateOrdersUtil extends React.Component {
   };
 
   handleSubmit = (values) => {
-    const ID = values[0];
-    const locationID = values[1];
-    const status = values[2];
-    const note = values[3];
-    const entry_user = [4]
-    const modificationUser = 'MODDER'
-
-    if (!(ID || locationID || status || entry_user)) {
+    const username = values[0];
+    const password = values[1];
+    const name = values[2];
+    const position = values[3];
+    const phone = values[4];
+    const email = values[5];
+    const address = values[6];
+    const privileges = values[7];
+    const modificationUser = 'MODDER';
+    if (
+      !(
+        username ||
+        password ||
+        name ||
+        position ||
+        phone ||
+        email ||
+        address ||
+        privileges ||
+        modificationUser
+      )
+    ) {
       this.setState(() => {
         return {
           returnResultMessage:
             'All fields besides note are required, please fill in a value for the empty field before attempting resubmission.',
         };
       });
-    } else if (!validator.isNumeric(ID) || !validator.isNumeric(locationID) ) {
+    } else if (!validator.isMobilePhone(phone)) {
       this.setState(() => {
         return {
           returnResultMessage:
-            'The ID that you have entered is not valid. Please enter the ID as a numeric value.',
+            'The phone number that you have entered is invalid. Please enter a proper phone number.',
+        };
+      });
+    } else if (!validator.isEmail(email)) {
+      this.setState(() => {
+        return {
+          returnResultMessage:
+            'The email address that you have entered is invalid. Please enter a proper email address for the user.',
+        };
+      });
+    } else if (password.length < 8) {
+      this.setState(() => {
+        return {
+          returnResultMessage:
+            'Password does not meet the minimum length specified in the password policy.',
+        };
+      });
+    } else if (
+      // None || Viewing || Inserting || Editting || Updating || Deleting
+      !(
+        parseInt(privileges) === 0 ||
+        parseInt(privileges) === 1 ||
+        parseInt(privileges) === 2 ||
+        parseInt(privileges) === 3 ||
+        parseInt(privileges) === 4 ||
+        parseInt(privileges) === 5
+      )
+    ) {
+      this.setState(() => {
+        return {
+          returnResultMessage: 'The privilege value that was entered does not exist.',
         };
       });
     } else {
       this.updateDataOnServer({
-        ID,
-        locationID,
-        status,
-        note,
-        entry_user,
-        modificationUser
+        username,
+        password,
+        name,
+        position,
+        phone,
+        email,
+        address,
+        privileges,
+        modificationUser,
       });
     }
   };
@@ -111,7 +160,7 @@ export default class UpdateOrdersUtil extends React.Component {
         {this.state.returnResultMessage && (
           <ReturnResult returnResultMessage={this.state.returnResultMessage} />
         )}
-        <UpdateOrdersForm
+        <UpdateUsersForm
           dataArray={this.state.dataArray}
           dataArrayHeaders={this.state.dataArrayHeaders}
           disablePoll={this.disablePoll}
@@ -121,15 +170,15 @@ export default class UpdateOrdersUtil extends React.Component {
     );
   }
 }
-class UpdateOrdersForm extends React.Component {
+class UpdateUsersForm extends React.Component {
   state = {
-    ID: '',
-    locationID: '',
-    status: '',
-    note: '',
-    user: '',
-    time: '',
-
+    username: '',
+    name: '',
+    position: '',
+    phone: '',
+    email: '',
+    address: '',
+    privileges: '',
   };
   componentDidMount() {}
 
@@ -144,14 +193,16 @@ class UpdateOrdersForm extends React.Component {
       for (let i = 0; i < this.props.dataArrayHeaders.length; i++) {
         arrayFromObj.push(row[this.props.dataArrayHeaders[i]].toString());
       }
+      
       console.log(arrayFromObj);
       if (
-        arrayFromObj[0].toLowerCase().includes(this.state.ID.toLowerCase()) &&
-        arrayFromObj[1].toLowerCase().includes(this.state.locationID.toLowerCase()) &&
-        arrayFromObj[2].toLowerCase().includes(this.state.status.toLowerCase()) &&
-        arrayFromObj[3].toLowerCase().includes(this.state.note.toLowerCase()) &&
-        arrayFromObj[4].toLowerCase().includes(this.state.user.toLowerCase()) && 
-        arrayFromObj[5].toLowerCase().includes(this.state.time.toLowerCase()) 
+        arrayFromObj[0].toString().toLowerCase().includes(this.state.username.toLowerCase()) &&
+        arrayFromObj[2].toString().toLowerCase().includes(this.state.name.toLowerCase()) &&
+        arrayFromObj[3].toString().toLowerCase().includes(this.state.position.toLowerCase()) &&
+        arrayFromObj[4].toString().toLowerCase().includes(this.state.phone.toLowerCase()) &&
+        arrayFromObj[5].toString().toLowerCase().includes(this.state.email.toLowerCase()) &&
+        arrayFromObj[6].toString().toLowerCase().includes(this.state.address.toLowerCase()) &&
+        arrayFromObj[7].toString().toLowerCase().includes(this.state.privileges.toLowerCase())
       ) {
         searchedDisplayData.push(arrayFromObj);
       }
@@ -176,7 +227,7 @@ class UpdateOrdersForm extends React.Component {
         let cell = document.createElement('td');
         let input = document.createElement('input');
         input.setAttribute('type', 'text');
-        if (i === 0 || i === values.length) input.setAttribute('disabled', true);
+        if (i === 0) input.setAttribute('disabled', true);
         input.setAttribute('value', values[i]);
         cell.appendChild(input);
         parent.appendChild(cell);
@@ -206,79 +257,92 @@ class UpdateOrdersForm extends React.Component {
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
-        <TextField
-            labelTxt='Order ID'
-            value={this.state.ID}
-            uniqueName='orderID'
-            fieldName='ID'
+          <TextField
+            labelTxt='Username'
+            value={this.state.username}
+            uniqueName='userUsername'
+            fieldName='username'
             type='text'
             required={false}
-            text='Enter order ID'
-            onChange={this.updateState}
-            errorMessage=''
-            emptyMessage=''
-            validate={this.handleAllow}
-          />  
-        <TextField
-            labelTxt='Order Location ID'
-            value={this.state.locationID}
-            uniqueName='orderLocation'
-            fieldName='locationID'
-            type='text'
-            required={false}
-            text='Enter order location'
+            text='Enter username'
             onChange={this.updateState}
             errorMessage=''
             emptyMessage=''
             validate={this.handleAllow}
           />
           <TextField
-            labelTxt='Order Status'
-            value={this.state.status}
-            uniqueName='orderStatus'
-            fieldName='status'
+            labelTxt='Full Name'
+            value={this.state.name}
+            uniqueName='userName'
+            fieldName='name'
             type='text'
             required={false}
-            text='Enter order status'
+            text='Enter user full name'
             onChange={this.updateState}
             errorMessage=''
             emptyMessage=''
             validate={this.handleAllow}
           />
           <TextField
-            labelTxt='Order Note'
-            value={this.state.note}
-            uniqueName='orderNote'
-            fieldName='note'
+            labelTxt='Position'
+            value={this.state.position}
+            uniqueName='userPosition'
+            fieldName='position'
             type='text'
             required={false}
-            text='Enter order note'
+            text='Enter user position'
             onChange={this.updateState}
             errorMessage=''
             emptyMessage=''
             validate={this.handleAllow}
           />
           <TextField
-            labelTxt='User'
-            value={this.state.user}
-            uniqueName='orderEntryUser'
-            fieldName='user'
+            labelTxt='Phone Number'
+            value={this.state.phone}
+            uniqueName='userPhone'
+            fieldName='phone'
             type='text'
             required={false}
-            text='Enter user that submitted the order'
+            text='Enter phone number'
             onChange={this.updateState}
             errorMessage=''
             emptyMessage=''
             validate={this.handleAllow}
           />
           <TextField
-            labelTxt='Last Modification Time'
-            value={this.state.time}
-            uniqueName='orderModificationTime'
-            fieldName='time'
+            labelTxt='Email'
+            value={this.state.email}
+            uniqueName='userEmail'
+            fieldName='email'
             type='text'
             required={false}
-            text='Enter the last time the order was modified'
+            text='Enter email'
+            onChange={this.updateState}
+            errorMessage=''
+            emptyMessage=''
+            validate={this.handleAllow}
+          />
+          <TextField
+            labelTxt='Address'
+            value={this.state.address}
+            uniqueName='userAddress'
+            fieldName='address'
+            type='text'
+            required={false}
+            text='Enter address'
+            onChange={this.updateState}
+            errorMessage=''
+            emptyMessage=''
+            validate={this.handleAllow}
+          />
+          <TextField
+            labelTxt='Privileges'
+            value={this.state.privileges}
+            uniqueName='userPrivileges'
+            fieldName='privileges'
+            type='text'
+            required={false}
+            text='Enter privilege'
             onChange={this.updateState}
             errorMessage=''
             emptyMessage=''

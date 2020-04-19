@@ -109,7 +109,7 @@ export default class UpdateMenuItemsUtil extends React.Component {
         {this.state.returnResultMessage && (
           <ReturnResult returnResultMessage={this.state.returnResultMessage} />
         )}
-        <UpdateInventoryItemsForm
+        <UpdateMenuItemsForm
           dataArray={this.state.dataArray}
           dataArrayHeaders={this.state.dataArrayHeaders}
           disablePoll={this.disablePoll}
@@ -119,7 +119,7 @@ export default class UpdateMenuItemsUtil extends React.Component {
     );
   }
 }
-class UpdateInventoryItemsForm extends React.Component {
+class UpdateMenuItemsForm extends React.Component {
   state = {
     ID: '',
     name: '',

@@ -96,7 +96,7 @@ class SearchOrdersForm extends React.Component {
         <form onSubmit={this.handleSubmit}>
           <TextField
             labelTxt='Order Location'
-            value={this.state.username}
+            value={this.state.location}
             uniqueName='orderLocation'
             fieldName='location'
             type='text'
