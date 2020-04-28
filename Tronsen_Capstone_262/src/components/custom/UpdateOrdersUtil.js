@@ -1,15 +1,15 @@
-import React from 'react';
-import TextField from '../TextField';
-import OutputTable from '../OutputTable';
-import $ from 'jquery';
-import ReturnResult from '../ReturnResult';
-import validator from 'validator';
+import React from "react";
+import TextField from "../TextField";
+import OutputTable from "../OutputTable";
+import $ from "jquery";
+import ReturnResult from "../ReturnResult";
+import validator from "validator";
 
 export default class UpdateOrdersUtil extends React.Component {
   state = {
     dataArray: [],
     dataArrayHeaders: [],
-    returnResultMessage: '',
+    returnResultMessage: "",
     pollEnabled: true,
   };
   componentDidMount() {
@@ -18,9 +18,9 @@ export default class UpdateOrdersUtil extends React.Component {
   }
   updateDataOnServer(data) {
     $.ajax({
-      url: '/backend/backendUpdateOrderData',
-      dataType: 'json',
-      type: 'PATCH',
+      url: "/backend/backendUpdateOrderData",
+      dataType: "json",
+      type: "PATCH",
       data,
       success: (data, status, xhr) => {
         console.log(status);
@@ -45,9 +45,9 @@ export default class UpdateOrdersUtil extends React.Component {
   loadDataFromServer = () => {
     if (this.state.pollEnabled) {
       $.ajax({
-        url: '/backend/backendLoadFullOrderData',
-        dataType: 'json',
-        type: 'GET',
+        url: "/backend/backendLoadFullOrderData",
+        dataType: "json",
+        type: "GET",
         success: (data, status, xhr) => {
           console.log(status);
           this.setState(() => ({
@@ -72,21 +72,21 @@ export default class UpdateOrdersUtil extends React.Component {
     const locationID = values[1];
     const status = values[2];
     const note = values[3];
-    const entry_user = [4]
-    const modificationUser = 'MODDER'
+    const entry_user = [4];
+    const modificationUser = localStorage.getItem("user");
 
     if (!(ID || locationID || status || entry_user)) {
       this.setState(() => {
         return {
           returnResultMessage:
-            'All fields besides note are required, please fill in a value for the empty field before attempting resubmission.',
+            "All fields besides note are required, please fill in a value for the empty field before attempting resubmission.",
         };
       });
-    } else if (!validator.isNumeric(ID) || !validator.isNumeric(locationID) ) {
+    } else if (!validator.isNumeric(ID) || !validator.isNumeric(locationID)) {
       this.setState(() => {
         return {
           returnResultMessage:
-            'The ID that you have entered is not valid. Please enter the ID as a numeric value.',
+            "The ID that you have entered is not valid. Please enter the ID as a numeric value.",
         };
       });
     } else {
@@ -96,7 +96,7 @@ export default class UpdateOrdersUtil extends React.Component {
         status,
         note,
         entry_user,
-        modificationUser
+        modificationUser,
       });
     }
   };
@@ -123,13 +123,12 @@ export default class UpdateOrdersUtil extends React.Component {
 }
 class UpdateOrdersForm extends React.Component {
   state = {
-    ID: '',
-    locationID: '',
-    status: '',
-    note: '',
-    user: '',
-    time: '',
-
+    ID: "",
+    locationID: "",
+    status: "",
+    note: "",
+    user: "",
+    time: "",
   };
   componentDidMount() {}
 
@@ -147,11 +146,15 @@ class UpdateOrdersForm extends React.Component {
       console.log(arrayFromObj);
       if (
         arrayFromObj[0].toLowerCase().includes(this.state.ID.toLowerCase()) &&
-        arrayFromObj[1].toLowerCase().includes(this.state.locationID.toLowerCase()) &&
-        arrayFromObj[2].toLowerCase().includes(this.state.status.toLowerCase()) &&
+        arrayFromObj[1]
+          .toLowerCase()
+          .includes(this.state.locationID.toLowerCase()) &&
+        arrayFromObj[2]
+          .toLowerCase()
+          .includes(this.state.status.toLowerCase()) &&
         arrayFromObj[3].toLowerCase().includes(this.state.note.toLowerCase()) &&
-        arrayFromObj[4].toLowerCase().includes(this.state.user.toLowerCase()) && 
-        arrayFromObj[5].toLowerCase().includes(this.state.time.toLowerCase()) 
+        arrayFromObj[4].toLowerCase().includes(this.state.user.toLowerCase()) &&
+        arrayFromObj[5].toLowerCase().includes(this.state.time.toLowerCase())
       ) {
         searchedDisplayData.push(arrayFromObj);
       }
@@ -162,7 +165,7 @@ class UpdateOrdersForm extends React.Component {
   handleUpdate = (e) => {
     e.preventDefault();
     this.props.disablePoll();
-    if (e.target.textContent === 'Edit') {
+    if (e.target.textContent === "Edit") {
       const parent = e.target.parentNode.parentNode;
       const children = parent.childNodes;
 
@@ -171,23 +174,24 @@ class UpdateOrdersForm extends React.Component {
       for (let i = 0; i < children.length - 1; i++) {
         values.push(children[i].textContent);
       }
-      parent.innerHTML = '';
+      parent.innerHTML = "";
       for (let i = 0; i < values.length; i++) {
-        let cell = document.createElement('td');
-        let input = document.createElement('input');
-        input.setAttribute('type', 'text');
-        if (i === 0 || i === values.length) input.setAttribute('disabled', true);
-        input.setAttribute('value', values[i]);
+        let cell = document.createElement("td");
+        let input = document.createElement("input");
+        input.setAttribute("type", "text");
+        if (i === 0 || i === values.length)
+          input.setAttribute("disabled", true);
+        input.setAttribute("value", values[i]);
         cell.appendChild(input);
         parent.appendChild(cell);
       }
-      let newButton = document.createElement('button');
-      newButton.innerHTML = 'Submit Changes';
+      let newButton = document.createElement("button");
+      newButton.innerHTML = "Submit Changes";
       newButton.onclick = this.handleUpdate;
-      let cell = document.createElement('td');
+      let cell = document.createElement("td");
       cell.appendChild(newButton);
       parent.appendChild(cell);
-    } else if (e.target.innerHTML === 'Submit Changes') {
+    } else if (e.target.innerHTML === "Submit Changes") {
       const parent = e.target.parentNode.parentNode;
       const children = parent.childNodes;
       let values = [];
@@ -206,82 +210,82 @@ class UpdateOrdersForm extends React.Component {
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
-        <TextField
-            labelTxt='Order ID'
+          <TextField
+            labelTxt="Order ID"
             value={this.state.ID}
-            uniqueName='orderID'
-            fieldName='ID'
-            type='text'
+            uniqueName="orderID"
+            fieldName="ID"
+            type="text"
             required={false}
-            text='Enter order ID'
+            text="Enter order ID"
             onChange={this.updateState}
-            errorMessage=''
-            emptyMessage=''
+            errorMessage=""
+            emptyMessage=""
             validate={this.handleAllow}
-          />  
-        <TextField
-            labelTxt='Order Location ID'
+          />
+          <TextField
+            labelTxt="Order Location ID"
             value={this.state.locationID}
-            uniqueName='orderLocation'
-            fieldName='locationID'
-            type='text'
+            uniqueName="orderLocation"
+            fieldName="locationID"
+            type="text"
             required={false}
-            text='Enter order location'
+            text="Enter order location"
             onChange={this.updateState}
-            errorMessage=''
-            emptyMessage=''
+            errorMessage=""
+            emptyMessage=""
             validate={this.handleAllow}
           />
           <TextField
-            labelTxt='Order Status'
+            labelTxt="Order Status"
             value={this.state.status}
-            uniqueName='orderStatus'
-            fieldName='status'
-            type='text'
+            uniqueName="orderStatus"
+            fieldName="status"
+            type="text"
             required={false}
-            text='Enter order status'
+            text="Enter order status"
             onChange={this.updateState}
-            errorMessage=''
-            emptyMessage=''
+            errorMessage=""
+            emptyMessage=""
             validate={this.handleAllow}
           />
           <TextField
-            labelTxt='Order Note'
+            labelTxt="Order Note"
             value={this.state.note}
-            uniqueName='orderNote'
-            fieldName='note'
-            type='text'
+            uniqueName="orderNote"
+            fieldName="note"
+            type="text"
             required={false}
-            text='Enter order note'
+            text="Enter order note"
             onChange={this.updateState}
-            errorMessage=''
-            emptyMessage=''
+            errorMessage=""
+            emptyMessage=""
             validate={this.handleAllow}
           />
           <TextField
-            labelTxt='User'
+            labelTxt="User"
             value={this.state.user}
-            uniqueName='orderEntryUser'
-            fieldName='user'
-            type='text'
+            uniqueName="orderEntryUser"
+            fieldName="user"
+            type="text"
             required={false}
-            text='Enter user that submitted the order'
+            text="Enter user that submitted the order"
             onChange={this.updateState}
-            errorMessage=''
-            emptyMessage=''
+            errorMessage=""
+            emptyMessage=""
             validate={this.handleAllow}
           />
           <TextField
-            labelTxt='Last Modification Time'
+            labelTxt="Last Modification Time"
             value={this.state.time}
-            uniqueName='orderModificationTime'
-            fieldName='time'
-            type='text'
+            uniqueName="orderModificationTime"
+            fieldName="time"
+            type="text"
             required={false}
-            text='Enter the last time the order was modified'
+            text="Enter the last time the order was modified"
             onChange={this.updateState}
-            errorMessage=''
-            emptyMessage=''
+            errorMessage=""
+            emptyMessage=""
             validate={this.handleAllow}
           />
         </form>

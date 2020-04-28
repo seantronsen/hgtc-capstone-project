@@ -23,7 +23,8 @@ module.exports = {
         removeinventoryitems: './src/pages/removeinventoryitems.js',
         removemenuitems: './src/pages/removemenuitems.js',
         removeorders: './src/pages/removeorders.js',
-        backendlogin: './src/pages/login.js'
+        backendlogin: './src/pages/login.js',
+        home: './src/pages/home.js'
     },
     mode: 'production',
     output: {

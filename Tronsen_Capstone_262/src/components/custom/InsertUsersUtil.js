@@ -52,7 +52,7 @@ class InsertUsersForm extends React.Component {
     phone: '',
     email: '',
     address: '',
-    entry_user: 'TEST',
+    entry_user: localStorage.getItem('user'),
   };
 
   componentDidMount() {}

@@ -74,7 +74,7 @@ class InsertMenuItemsForm extends React.Component {
     name: '',
     description: '',
     ingridients: [],
-    entry_user: 'TEST',
+    entry_user: localStorage.getItem('user'),
   };
   componentDidMount() {}
   componentDidUpdate() {}
@@ -88,7 +88,7 @@ class InsertMenuItemsForm extends React.Component {
       this.props.handleFormatError('A required field was left blank');
       return;
     } else if (!ingridients.length) {
-      this.props.handleFormatError('No ingridients were selected for the menu item');
+      this.props.handleFormatError('No ingredients were selected for the menu item');
       return;
     } else {
       this.props.handleSubmit({ name, description, ingridients, entry_user });
@@ -129,24 +129,24 @@ class InsertMenuItemsForm extends React.Component {
             validate={validator.isAscii}
           />
           <OutputDropDown
-            dropDownLabelTxt='Item Ingridients'
+            dropDownLabelTxt='Item Ingredients'
             dropDownUniqueName='ingridientSelect'
             optionData={this.props.inventoryItemArray}
             optionIDField='inventory_items_id'
             optionTextField='item'
             textFieldLabelTxt='Quantity'
             textFieldUniqueName='ingridientQuantity'
-            textFieldPlaceHolder='Enter the numeric quantity of the ingridient in the unit listed.'
+            textFieldPlaceHolder='Enter the numeric quantity of the ingredient in the unit listed.'
             textFieldErrorMessage='A numeric value must be entered. Do not include units or non-numeric text.'
             textFieldEmptyMessage=''
             textFieldValidator={validator.isNumeric}
-            buttonText='Add Ingridient to Item'
+            buttonText='Add Ingredient to Item'
             outputTableHeaderData={['ID', 'Item', 'Quantity']}
             outputUserError={this.props.handleFormatError}
             deleteData={true}
             parentFieldName='ingridients'
             parentUpdaterFunction={this.updateState}
-            existsError='This ingridient has already been added to the item.'
+            existsError='This ingredient has already been added to the item.'
             allowDups={false}
           />
           <button type='submit' style={{ width: '15%' }} >

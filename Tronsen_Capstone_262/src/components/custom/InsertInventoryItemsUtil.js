@@ -70,7 +70,7 @@ class InsertInventoryItemsForm extends React.Component {
         price: '',
         quantity: '',
         measurement: '',
-        entry_user: 'TEST',
+        entry_user: localStorage.getItem('user'),
     };
 
     componentDidMount() { }

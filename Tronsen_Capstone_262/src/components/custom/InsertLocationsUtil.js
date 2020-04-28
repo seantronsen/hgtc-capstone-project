@@ -47,7 +47,7 @@ class InsertLocationForm extends React.Component {
     locationBuilding: 'Capstone264Hotel Columbia',
     locationArea: '',
     locationSubArea: '',
-    locationUser: 'TEST',
+    locationUser: localStorage.getItem('user'),
   };
 
   componentDidMount() {}

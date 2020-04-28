@@ -72,7 +72,7 @@ export default class UpdateMenuItemsUtil extends React.Component {
     const name = values[1];
     const description = values[2];
     const price = values[3];
-    const entry_user = 'TEST';
+    const entry_user = localStorage.getItem('user');
 
     if (!(ID || name || description || price || entry_user)) {
       this.setState(() => {

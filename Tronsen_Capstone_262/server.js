@@ -807,7 +807,7 @@ app.post("/backend/backendOrdersAdd", (req, res) => {
                     if (row[0].menu_items_name) {
                       returnMessage = `${row[0].menu_items_name} does not have enough of the required ingredients in stock`;
                       throw new Error(
-                        "Item does not have enough of the required ingridients in stock."
+                        "Item does not have enough of the required ingredients in stock."
                       );
                     } else {
                       returnMessage = `Server error occurred`;
@@ -1728,10 +1728,8 @@ app.post("/backend/backendRemoveOrderData", (req, res) => {
 });
 
 app.get("/accessdenied", (req, res) => {
-  res.status(200).render("404", {
+  res.status(200).render("backendhome", {
     header_content: "Access Denied",
-    body_message:
-      "User does not have required privileges for accessing selected utility.",
     footer_content,
   });
 });

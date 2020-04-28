@@ -73,7 +73,7 @@ export default class UpdateLocationsUtil extends React.Component {
     const building = values[1];
     const area = values[2];
     const subarea = values[3];
-    const entry_user = 'TEST';
+    const entry_user = localStorage.getItem('user');
 
     if (!(ID || building || area || subarea || entry_user)) {
       this.setState(() => {

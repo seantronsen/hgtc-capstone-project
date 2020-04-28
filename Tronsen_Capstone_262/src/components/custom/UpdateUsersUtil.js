@@ -78,7 +78,7 @@ export default class UpdateUsersUtil extends React.Component {
     const email = values[5];
     const address = values[6];
     const privileges = values[7];
-    const modificationUser = 'MODDER';
+    const modificationUser = localStorage.getItem('user');
     if (
       !(
         username ||

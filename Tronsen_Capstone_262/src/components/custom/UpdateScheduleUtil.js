@@ -70,7 +70,7 @@ export default class UpdateUsersUtil extends React.Component {
     const day = values[0];
     const openHour = values[1];
     const closeHour = values[2];
-    const modificationUser = 'MODDER';
+    const modificationUser = localStorage.getItem('user');
     if (!(day || openHour || closeHour || modificationUser)) {
       this.setState(() => {
         return {

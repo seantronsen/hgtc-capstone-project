@@ -31,7 +31,7 @@ export default class LoginUtil extends React.Component {
         if (data.valid) {
           localStorage.setItem("user", this.state.username);
           window.location.href =
-            "/backend/backendinventoryadd" + "?user=" + this.state.username;
+            "/backend/backendhome" + "?user=" + this.state.username;
         } else {
           window.alert("Login Failed: Invalid Username or Password");
         }

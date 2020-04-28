@@ -75,7 +75,7 @@ export default class UpdateInventoryItemsUtil extends React.Component {
     const price = values[4];
     const quantity = values[5];
     const unit = values[6];
-    const entry_user = 'TEST';
+    const entry_user = localStorage.getItem('user');
 
     if (!(ID || name || description || type || price || quantity || unit || entry_user)) {
       this.setState(() => {

@@ -79,7 +79,7 @@ class InsertOrdersForm extends React.Component {
     status: 'OPEN',
     note: '',
     orderItems: [],
-    entry_user: 'TEST',
+    entry_user: localStorage.getItem('user'),
   };
   componentDidMount() {}
   componentDidUpdate() {}
