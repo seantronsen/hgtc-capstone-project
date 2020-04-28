@@ -24,6 +24,10 @@ module.exports = {
         removemenuitems: './src/pages/removemenuitems.js',
         removeorders: './src/pages/removeorders.js',
         backendlogin: './src/pages/login.js',
+        viewinventorystock: './src/pages/viewinventorystock.js',
+        viewmenu: './src/pages/viewmenu.js',
+        viewordersopen: './src/pages/viewordersopen.js',
+        viewordersclosed: './src/pages/viewordersclosed.js',
         home: './src/pages/home.js'
     },
     mode: 'production',

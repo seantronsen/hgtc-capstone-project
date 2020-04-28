@@ -45,7 +45,6 @@ a {
   overflow: hidden;
 }
 
-
 /* Heading Styles */
 h1 {
   font-size: 2.5rem;
@@ -213,6 +212,11 @@ div#content {
   font-weight: bold;
 }
 
+.ReturnResult p {
+  padding: 0.5rem;
+  padding-left: 0rem;
+}
+
 .react-textfield,
 .react-dropdown {
   padding: 0.2rem;
@@ -252,35 +256,75 @@ div#content {
   transition: height 300ms;
 }
 
-#dataOutputTable {
+.dataOutputTable {
   width: 55vw;
+  margin-top: 1rem;
   text-align: center;
 }
 
-#dataOutputTable tr {
+.dataOutputTable thead th {
+  height: 2rem;
+}
+
+.dataOutputTable tr {
   border-bottom: 2px outset #0eb34d;
   padding: 0.5rem;
 }
 
-#dataOutputTable td {
+.dataOutputTable td {
   padding: 0.3rem;
 }
 
-#dataOutputTable button {
+.dataOutputTable button {
   width: 100%;
 }
 
-#dataOutputTable input {
+.dataOutputTable input {
   width: 100%;
 }
 
 #updateScheduleHeader {
-  height: 1vh;
+  height: 6vh;
   padding-bottom: 2rem;
+}
+
+.View-Modal {
+  background: #0eb34d;
+  color: white;
+  height: 50%;
+  width: 50%;
+  margin: auto;
+  margin-top: 25vh;
+  border-radius: 1rem;
+}
+
+.View-Modal .dataOutputTable {
+  width: 100%;
+  table-layout: fixed;
+  overflow: auto;
+  padding: 1rem;
+}
+
+.View-Modal .dataOutputTable tr {
+  width: 90%;
+  background-color: #eef6e7;
+  color: #0eb34d;
+  border-radius: 1rem;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 1rem;
+  display: block;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.View-Modal .dataOutputTable tr td,
+.View-Modal .dataOutputTable tr th {
+  text-align: left;
+  padding: 1rem;
 }
 
 #UtilBox * {
   overflow: auto;
 }
-
-

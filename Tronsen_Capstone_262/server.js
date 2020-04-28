@@ -21,6 +21,7 @@ const bcrypt = require("bcrypt");
 const app = express();
 const saltRounds = 10;
 const mysqlPromise = require("mysql2/promise");
+const validator = require("validator");
 
 const footer_content = "Copyright © 2020 Bug Byte Solutions Web Development.";
 
@@ -57,12 +58,20 @@ app.use("/", express.static(path.join(__dirname, "public")));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
 const conObject = {
-  host: "localhost",
-  user: "root",
+  host: "istwebclass.org",
+  user: "stronsen_cap262",
   password: "password",
   database: "stronsen_capstone262",
 };
+
+// const conObject = {
+//   host: "localhost",
+//   user: "root",
+//   password: "password",
+//   database: "stronsen_capstone262",
+// };
 const con = mysql2.createConnection(conObject);
 
 con.connect((err) => {
@@ -393,18 +402,6 @@ app.get("/backend/backendhome", async (req, res) => {
   }
 });
 
-app.get("/backend/backendsupport", async (req, res) => {
-  let auth = await userAuth(req.query.user, 1);
-  if (auth === 0) res.redirect("/404");
-  else if (auth === 1) res.redirect("/accessdenied");
-  else if (auth === 2) {
-    res.render("backendsupport", {
-      header_content: "Support",
-      footer_content,
-    });
-  }
-});
-
 app.get("/backend/backendupdateschedule", async (req, res) => {
   let auth = await userAuth(req.query.user, 3);
   if (auth === 0) res.redirect("/404");
@@ -537,7 +534,7 @@ app.post("/backend/backendusersadd", (req, res) => {
                   .send({ resMsg: "Server error occurred" });
               } else {
                 return res.status(200).send({
-                  resMsg: `${result.affectedRows} record(s) inserted. Identifier ID: ${result.insertId}`,
+                  resMsg: `${result.affectedRows} record(s) inserted. Identifier ID: ${username}`,
                 });
               }
             });
@@ -1184,17 +1181,30 @@ app.patch("/backend/backendUpdateUserData", (req, res) => {
         } else {
           let sqlTemp =
             "UPDATE users SET users_password=?, users_name_actual=?, users_position=?, users_phone=?, users_email=?, users_address=?, users_privileges=?, users_modification_user=?, users_modification_time=CURRENT_TIMESTAMP() WHERE users_username=?;";
-          let sql = mysql2.format(sqlTemp, [
-            hash,
-            name,
-            position,
-            phone,
-            email,
-            address,
-            privileges,
-            modificationUser,
-            username,
-          ]);
+          let sql;
+          password.length > 50
+            ? (sql = mysql2.format(sqlTemp, [
+                password,
+                name,
+                position,
+                phone,
+                email,
+                address,
+                privileges,
+                modificationUser,
+                username,
+              ]))
+            : (sql = mysql2.format(sqlTemp, [
+                hash,
+                name,
+                position,
+                phone,
+                email,
+                address,
+                privileges,
+                modificationUser,
+                username,
+              ]));
 
           con.execute(sql, (err, result) => {
             if (err) {
@@ -1406,6 +1416,31 @@ app.get("/backend/backendLoadInventoryData", (req, res) => {
   });
 });
 
+app.get("/backend/backendLoadInventoryStock", (req, res) => {
+  let sqlTemp =
+    'SELECT inventory_items_name as "Item Name", inventory_items_description AS "Item Description", item_types_id AS "Item Type", inventory_items_price AS "Item Price", inventory_items_quantity AS "Quantity Available", inventory_items_measurement AS "Measurement Unit" FROM inventory_items ORDER BY inventory_items_quantity ASC;';
+  con.query(mysql2.format(sqlTemp, []), (err, data, meta) => {
+    if (err) {
+      return res
+        .status(200)
+        .send({ resMsg: "Error loading available inventory from database." });
+    } else if (data.length === 0) {
+      return res.status(200).send({
+        resMsg:
+          "There are no inventory items in the system. Please add some via the corresponding menu option.",
+      });
+    } else {
+      return res.status(200).send({
+        resMsg: `Server was last polled at ${new Date(Date.now()).toString()}`,
+        arrayData: data,
+        arrayHeaderData: meta.map((metaData) => {
+          return metaData.name;
+        }),
+      });
+    }
+  });
+});
+
 app.get("/backend/backendLoadFullInventoryData", (req, res) => {
   let sqlTemp =
     'SELECT inventory_items_id AS "ID", inventory_items_name as "Item Name", inventory_items_description AS "Item Description", item_types_id AS "Item Type", inventory_items_price AS "Item Price", inventory_items_quantity AS "Quantity Available", inventory_items_measurement AS "Measurement Unit" FROM inventory_items;';
@@ -1472,6 +1507,30 @@ app.get("/backend/backendLoadFullMenuData", (req, res) => {
     } else {
       return res.status(200).send({
         resMsg: `Server was last polled at ${new Date(Date.now()).toString()}`,
+        arrayData: data,
+        arrayHeaderData: meta.map((metaData) => {
+          return metaData.name;
+        }),
+      });
+    }
+  });
+});
+
+app.get("/backend/backendViewMenuData", (req, res) => {
+  let sqlTemp =
+    'SELECT inventory_items.inventory_items_name AS "Ingredient Name", inventory_items.inventory_items_description AS "Ingredient Description", inventory_items.inventory_items_measurement AS "Ingredient Measurement", menu_ingredients.menu_ingridients_quantity AS "Amount in Dish" FROM menu_ingredients INNER JOIN inventory_items ON inventory_items.inventory_items_id=menu_ingredients.inventory_items_id WHERE menu_ingredients.menu_items_id=? ;';
+  con.query(mysql2.format(sqlTemp, [req.query.ID]), (err, data, meta) => {
+    if (err) {
+      return res
+        .status(200)
+        .send({ resMsg: "Error loading ingredient data from database." });
+    } else if (data.length === 0) {
+      return res.status(200).send({
+        resMsg:
+          "There are no menu items in the system. Please add some via the corresponding menu option.",
+      });
+    } else {
+      return res.status(200).send({
         arrayData: data,
         arrayHeaderData: meta.map((metaData) => {
           return metaData.name;
@@ -1572,6 +1631,82 @@ app.get("/backend/backendLoadFullOrderData", (req, res) => {
     } else {
       return res.status(200).send({
         resMsg: `Server was last polled at ${new Date(Date.now()).toString()}`,
+        arrayData: data,
+        arrayHeaderData: meta.map((metaData) => {
+          return metaData.name;
+        }),
+      });
+    }
+  });
+});
+
+app.get("/backend/backendLoadFullOpenOrderData", (req, res) => {
+  let sqlTemp =
+    'SELECT orders_id as "ID", CONCAT(order_locations.order_locations_building, ", ", order_locations.order_locations_area, " ", order_locations.order_locations_subarea) AS "Location", orders_status AS "Order Status", orders_note AS "Note", orders_entry_user AS "Entry User", orders_entry_time AS "Time" FROM orders INNER JOIN order_locations ON orders.order_locations_id=order_locations.order_locations_id WHERE orders_status NOT LIKE "%closed%" ORDER BY orders_entry_time ASC;';
+  con.query(mysql2.format(sqlTemp, []), (err, data, meta) => {
+    if (err) {
+      return res
+        .status(200)
+        .send({ resMsg: "Error loading orders from database." });
+    } else if (data.length === 0) {
+      return res.status(200).send({
+        resMsg:
+          "There are no open orders in the system. Please add some via the corresponding menu option.",
+      });
+    } else {
+      return res.status(200).send({
+        resMsg: `Server was last polled at ${new Date(Date.now()).toString()}`,
+        arrayData: data,
+        arrayHeaderData: meta.map((metaData) => {
+          return metaData.name;
+        }),
+      });
+    }
+  });
+});
+
+app.get("/backend/backendLoadFullClosedOrderData", (req, res) => {
+  let sqlTemp =
+    'SELECT orders_id as "ID", CONCAT(order_locations.order_locations_building, ", ", order_locations.order_locations_area, " ", order_locations.order_locations_subarea) AS "Location", orders_status AS "Order Status", orders_note AS "Note", orders_entry_user AS "Entry User", orders_entry_time AS "Time" FROM orders INNER JOIN order_locations ON orders.order_locations_id=order_locations.order_locations_id WHERE orders_status LIKE "%closed%" ORDER BY orders_entry_time ASC;';
+  con.query(mysql2.format(sqlTemp, []), (err, data, meta) => {
+    if (err) {
+      return res
+        .status(200)
+        .send({ resMsg: "Error loading orders from database." });
+    } else if (data.length === 0) {
+      return res.status(200).send({
+        resMsg:
+          "There are no open orders in the system. Please add some via the corresponding menu option.",
+      });
+    } else {
+      return res.status(200).send({
+        resMsg: `Server was last polled at ${new Date(Date.now()).toString()}`,
+        arrayData: data,
+        arrayHeaderData: meta.map((metaData) => {
+          return metaData.name;
+        }),
+      });
+    }
+  });
+});
+
+
+
+
+app.get("/backend/backendLoadViewOrderData", (req, res) => {
+  let sqlTemp =
+    'SELECT  menu_items.menu_items_name AS "Item Name", order_items.order_items_note AS "Item Note", order_items.order_items_sale_price AS "Sale Price" FROM order_items INNER JOIN menu_items ON order_items.menu_items_id=menu_items.menu_items_id WHERE order_items.orders_id=?;';
+  con.query(mysql2.format(sqlTemp, [req.query.ID]), (err, data, meta) => {
+    if (err) {
+      return res
+        .status(200)
+        .send({ resMsg: "Error loading this orders items from database." });
+    } else if (data.length === 0) {
+      return res.status(200).send({
+        resMsg: "There are no items for this order in the system.",
+      });
+    } else {
+      return res.status(200).send({
         arrayData: data,
         arrayHeaderData: meta.map((metaData) => {
           return metaData.name;
@@ -1707,7 +1842,7 @@ app.post("/backend/backendRemoveOrderData", (req, res) => {
   let sql = mysql2.format("DELETE from order_items WHERE orders_id= ? ;", [ID]);
   con.execute(sql, (err, result) => {
     if (err) {
-      console.log(err.message)
+      console.log(err.message);
       res.send(err);
     } else {
       let sqlInner = mysql2.format("DELETE FROM orders WHERE orders_id = ? ;", [
@@ -1715,7 +1850,7 @@ app.post("/backend/backendRemoveOrderData", (req, res) => {
       ]);
       con.execute(sqlInner, (err, result) => {
         if (err) {
-          console.log(err.message)
+          console.log(err.message);
           res.send(err);
         } else {
           res.status(200).send({

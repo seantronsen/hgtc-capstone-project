@@ -1,9 +1,8 @@
-import React from 'react';
+import React from "react";
 
 const OutputTable = (props) => {
-  console.log(props.outputTableHeaderData)
   return (
-    <table id="dataOutputTable">
+    <table className="dataOutputTable">
       <thead>
         <tr>
           {props.outputTableHeaderData &&
@@ -12,6 +11,7 @@ const OutputTable = (props) => {
             })}
           {props.deleteData ? <th>Remove</th> : undefined}
           {props.editData ? <th>Edit</th> : undefined}
+          {props.viewData ? <th>View</th> : undefined}
         </tr>
       </thead>
       <tbody>
@@ -22,6 +22,7 @@ const OutputTable = (props) => {
                 rowData={row}
                 deleteData={props.deleteData}
                 editData={props.editData}
+                viewData={props.viewData}
               />
             );
           })}
@@ -48,6 +49,13 @@ const OutputRow = (props) => {
         <td>
           <button value={id} onClick={props.editData}>
             Edit
+          </button>
+        </td>
+      ) : undefined}
+      {props.viewData ? (
+        <td>
+          <button value={id} onClick={props.viewData}>
+            View
           </button>
         </td>
       ) : undefined}
