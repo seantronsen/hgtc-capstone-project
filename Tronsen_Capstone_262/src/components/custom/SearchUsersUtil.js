@@ -92,7 +92,6 @@ class SearchUsersForm extends React.Component {
     return true;
   };
   render() {
-    debugger;
     return (
       <div>
         <form onSubmit={this.handleSubmit}>

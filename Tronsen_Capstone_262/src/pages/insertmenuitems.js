@@ -1,5 +1,6 @@
 import ReactDOM from 'react-dom'
 import React from 'react'
+import "../AuthScript";
 import UtilBody from '../components/UtilBody'
 import InsertMenuItemsUtil from '../components/custom/InsertMenuItemsUtil'
 const description = 'The form below can be used to add a new menu item to the system. Note that the price of the item is calculated automatically based '+

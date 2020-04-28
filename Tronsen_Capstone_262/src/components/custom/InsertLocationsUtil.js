@@ -115,7 +115,7 @@ class InsertLocationForm extends React.Component {
             emptyMessage='Building Subarea cannot be a blank value'
             validate={validator.isAscii}
           />
-          <button type='submit' style={{width: '15%'}}>Submit</button>
+          <button type='submit'>Submit</button>
         </form>
       </div>
     );

@@ -1,11 +1,11 @@
-import React from 'react';
+import React from "react";
 
 export default class TextField extends React.Component {
   state = {
     isEmpty: true,
     value: null,
     valid: false,
-    errorMessage: '',
+    errorMessage: "",
     errorVisible: false,
   };
 
@@ -26,11 +26,11 @@ export default class TextField extends React.Component {
     );
   };
   validation(value, valid) {
-    if (typeof valid === 'undefined') {
+    if (typeof valid === "undefined") {
       valid = true;
     }
 
-    var message = '';
+    var message = "";
     var errorVisible = false;
 
     if (this.props.required && !value.length) {
@@ -58,6 +58,38 @@ export default class TextField extends React.Component {
 
   render() {
     return (
+      <div className='react-textfield-body'>
+        <div
+          className={"react-textfield  react-textfield" + this.props.uniqueName}
+        >
+          <label
+            className="labels react-textfield_labels"
+            for="this.props.uniqueName"
+          >
+            {this.props.labelTxt}
+          </label>
+          <input
+            type={this.props.type}
+            name={this.props.uniqueName}
+            id={this.props.uniqueName}
+            placeholder={this.props.text}
+            className={
+              "react-textfield-input react-textfield-input-" +
+              this.props.uniqueName
+            }
+            onChange={this.handleChange}
+            onBlur={this.handleBlur}
+            value={this.props.value}
+            required={this.props.required}
+          />
+        </div>
+        <InputError
+          visible={this.state.errorVisible}
+          errorMessage={this.state.errorMessage}
+        />
+      </div>
+
+      /*
       <table style={{ width: '100%' }} className={this.props.uniqueName}>
         <tbody style={{ width: '100%' }}>
           <tr style={{ width: '100%' }}>
@@ -92,18 +124,23 @@ export default class TextField extends React.Component {
             </td>
           </tr>
         </tbody>
-      </table>
+      </table> */
     );
   }
 }
 const InputError = (props) => {
   return (
+    <p className={"react-textfield-input-error react-textfield-input-error_" + props.visible}>
+      {props.errorMessage}
+    </p>
+
+    /*
     <span style={{backgroundColor: '#FF8888',  width: '100%' }}>
       {props.visible && (
         <span style={{ width: '100%' }}>
           {props.errorMessage}
         </span>
       )}
-    </span>
+    </span>*/
   );
 };

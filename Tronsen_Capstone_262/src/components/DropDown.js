@@ -1,11 +1,33 @@
-import React from 'react';
+import React from "react";
 
 export default class DropDown extends React.Component {
   handleChange = (e) => {
-    this.props.onChange(this.props.fieldName, e.target.options[e.target.selectedIndex].value);
+    this.props.onChange(
+      this.props.fieldName,
+      e.target.options[e.target.selectedIndex].value
+    );
   };
   render() {
     return (
+      <div className={"react-dropdown react-dropdown-" + this.props.uniqueName}>
+        <label for={this.props.uniqueName}>{this.props.labelTxt}</label>
+        <select
+          id={this.props.uniqueName}
+          onChange={this.handleChange}
+        >
+          <option></option>
+          {this.props.optionData &&
+            this.props.optionData.map((option) => (
+              <Option
+                dataObject={option}
+                hiddenValue={this.props.optionIDField}
+                optionText={this.props.optionTextField}
+              />
+            ))}
+        </select>
+      </div>
+
+      /*
       <table style={{ width: '100%' }}>
         <tbody style={{ width: '100%' }}>
           <tr style={{ width: '100%' }}>
@@ -34,7 +56,7 @@ export default class DropDown extends React.Component {
             </td>
           </tr>
         </tbody>
-      </table>
+      </table>*/
     );
   }
 }

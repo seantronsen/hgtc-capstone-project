@@ -200,7 +200,7 @@ class InsertInventoryItemsForm extends React.Component {
                         emptyMessage='Unit of measurement cannot be a blank value'
                         validate={validator.isAscii}
                     />
-                    <button type='submit' style={{ width: '15%' }}>
+                    <button type='submit'>
                         Submit
             </button>
                 </form>

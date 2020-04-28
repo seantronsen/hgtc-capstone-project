@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.config.js",
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "dev-server": "webpack-dev-server"
   },
   "author": "Sean Tronsen",
   "license": "ISC",

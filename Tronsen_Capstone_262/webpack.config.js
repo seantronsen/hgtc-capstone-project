@@ -17,7 +17,13 @@ module.exports = {
         updatemenuitems: './src/pages/updatemenuitems.js',
         updateorders: './src/pages/updateorders.js',
         updateusers: './src/pages/updateusers.js',
-        updateschedule: './src/pages/updateschedule.js'
+        updateschedule: './src/pages/updateschedule.js',
+        removelocation: './src/pages/removelocation.js',
+        removeuser: './src/pages/removeuser.js',
+        removeinventoryitems: './src/pages/removeinventoryitems.js',
+        removemenuitems: './src/pages/removemenuitems.js',
+        removeorders: './src/pages/removeorders.js',
+        backendlogin: './src/pages/login.js'
     },
     mode: 'production',
     output: {

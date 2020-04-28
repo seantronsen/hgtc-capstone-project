@@ -215,7 +215,7 @@ class InsertUsersForm extends React.Component {
             emptyMessage='Address cannot be a blank value'
             validate={this.checkAddress}
           />
-          <button type='submit' style={{ width: '15%' }}>
+          <button type='submit'>
             Submit
           </button>
         </form>

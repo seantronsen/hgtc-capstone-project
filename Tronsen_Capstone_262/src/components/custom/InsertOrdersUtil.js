@@ -153,7 +153,7 @@ class InsertOrdersForm extends React.Component {
             parentFieldName='orderItems'
             parentUpdaterFunction={this.updateState}
           />
-          <button type='submit' style={{ width: '15%' }}>
+          <button type='submit'>
             Submit
           </button>
         </form>
